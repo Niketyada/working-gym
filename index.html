@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>ColdReach — Stop Chasing Leads. Start Booking Meetings.</title>
+    <meta name="description" content="ColdReach automates your entire outbound pipeline to deliver qualified sales meetings on your calendar."/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "background": "#06060a",
+                        "surface": "#06060a",
+                        "surface-dim": "#0e0e13",
+                        "surface-container-low": "#131319",
+                        "surface-container": "#19191f",
+                        "surface-container-high": "#1f1f26",
+                        "surface-container-highest": "#25252d",
+                        "on-surface": "#f9f5fd",
+                        "on-surface-variant": "#acaab1",
+                        "on-background": "#f9f5fd",
+                        "primary": "#a3a6ff",
+                        "primary-dim": "#6063ee",
+                        "primary-container": "#9396ff",
+                        "on-primary": "#0f00a4",
+                        "secondary": "#ac8aff",
+                        "secondary-dim": "#8455ef",
+                        "secondary-container": "#5516be",
+                        "on-secondary": "#280067",
+                        "tertiary": "#8ce7ff",
+                        "tertiary-dim": "#40ceed",
+                        "tertiary-container": "#53ddfc",
+                        "on-tertiary": "#005464",
+                        "error": "#ff6e84",
+                        "error-dim": "#d73357",
+                        "error-container": "#a70138",
+                        "outline": "#76747b",
+                        "outline-variant": "#48474d",
+                        "inverse-surface": "#fcf8ff",
+                        "inverse-primary": "#494bd7",
+                    },
+                    fontFamily: {
+                        "sans": ["Inter", "system-ui", "-apple-system", "sans-serif"],
+                    },
+                    animation: {
+                        'float-slow': 'float 20s ease-in-out infinite',
+                        'float-medium': 'float 15s ease-in-out infinite reverse',
+                        'float-fast': 'float 12s ease-in-out infinite',
+                        'pulse-glow': 'pulseGlow 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translate(0, 0) rotate(0deg)' },
+                            '25%': { transform: 'translate(30px, -40px) rotate(2deg)' },
+                            '50%': { transform: 'translate(-20px, 20px) rotate(-1deg)' },
+                            '75%': { transform: 'translate(15px, -10px) rotate(1deg)' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 20px rgba(99,102,241,0.15)' },
+                            '50%': { boxShadow: '0 0 40px rgba(99,102,241,0.3)' },
+                        },
+                    },
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer base {
+            * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+            ::selection { background: rgba(99, 102, 241, 0.3); color: #fff; }
+            ::-webkit-scrollbar { width: 6px; }
+            ::-webkit-scrollbar-track { background: #06060a; }
+            ::-webkit-scrollbar-thumb { background: #25252d; border-radius: 3px; }
+            ::-webkit-scrollbar-thumb:hover { background: #48474d; }
+        }
+
+        @layer components {
+            .glass-panel {
+                background: rgba(255, 255, 255, 0.025);
+                backdrop-filter: blur(16px) saturate(1.2);
+                border: 1px solid rgba(255, 255, 255, 0.06);
+            }
+            .glass-panel-hover {
+                @apply glass-panel;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .glass-panel-hover:hover {
+                background: rgba(255, 255, 255, 0.05);
+                border-color: rgba(99, 102, 241, 0.2);
+                transform: translateY(-4px);
+                box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 30px rgba(99,102,241,0.08);
+            }
+            .hero-gradient-orb {
+                position: absolute;
+                filter: blur(120px);
+                z-index: 0;
+                opacity: 0.25;
+                will-change: transform;
+                pointer-events: none;
+            }
+            .grid-pattern {
+                background-image:
+                    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+                background-size: 64px 64px;
+            }
+            .gradient-text-impact {
+                background: linear-gradient(135deg, #818cf8 0%, #c084fc 40%, #f472b6 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            .primary-cta-gradient {
+                background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+                position: relative;
+                overflow: hidden;
+            }
+            .primary-cta-gradient::after {
+                content: '';
+                position: absolute;
+                top: 0; left: -100%;
+                width: 100%; height: 100%;
+                background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.12) 50%, transparent 60%);
+                transition: left 0.6s ease;
+            }
+            .primary-cta-gradient:hover::after { left: 100%; }
+            .results-step-line {
+                background: linear-gradient(90deg, rgba(99,102,241,0.4) 0%, rgba(99, 102, 241, 0) 100%);
+                pointer-events: none;
+            }
+            .vignette-overlay {
+                background: radial-gradient(ellipse at center, transparent 0%, rgba(6,6,10,0.5) 100%);
+                pointer-events: none;
+            }
+            .stat-card-glow { position: relative; }
+            .stat-card-glow::before {
+                content: '';
+                position: absolute; inset: -1px;
+                border-radius: inherit; padding: 1px;
+                background: linear-gradient(135deg, transparent 40%, rgba(99,102,241,0.15) 100%);
+                -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+                -webkit-mask-composite: xor;
+                mask-composite: exclude;
+                opacity: 0; transition: opacity 0.4s ease;
+            }
+            .stat-card-glow:hover::before { opacity: 1; }
+
+            .reveal {
+                opacity: 0; transform: translateY(30px);
+                transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .reveal.visible { opacity: 1; transform: translateY(0); }
+            .reveal-delay-1 { transition-delay: 0.1s; }
+            .reveal-delay-2 { transition-delay: 0.2s; }
+            .reveal-delay-3 { transition-delay: 0.3s; }
+            .reveal-delay-4 { transition-delay: 0.4s; }
+            .reveal-delay-5 { transition-delay: 0.5s; }
+
+            button:focus-visible, a:focus-visible {
+                outline: 2px solid #818cf8;
+                outline-offset: 2px;
+            }
+            .mobile-menu {
+                transform: translateX(100%);
+                transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .mobile-menu.open { transform: translateX(0); }
+
+            .logo-item {
+                transition: all 0.4s ease;
+                opacity: 0.35; filter: grayscale(1);
+            }
+            .logo-item:hover {
+                opacity: 0.8; filter: grayscale(0);
+                transform: translateY(-2px);
+            }
+            .tooltip-wrapper { position: relative; }
+            .tooltip-wrapper .tooltip-text {
+                visibility: hidden; opacity: 0;
+                position: absolute; bottom: 100%; left: 50%;
+                transform: translateX(-50%) translateY(4px);
+                background: #25252d; color: #f9f5fd;
+                padding: 6px 14px; border-radius: 8px;
+                font-size: 12px; white-space: nowrap;
+                transition: all 0.2s ease; pointer-events: none;
+                border: 1px solid rgba(255,255,255,0.08);
+            }
+            .tooltip-wrapper:hover .tooltip-text {
+                visibility: visible; opacity: 1;
+                transform: translateX(-50%) translateY(-8px);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+            .reveal { opacity: 1; transform: none; transition: none; }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-sans overflow-x-hidden">
+
+    <!-- Skip Nav -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:bg-primary focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:text-sm focus:font-semibold">
+        Skip to main content
+    </a>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- NAVBAR                                 -->
+    <!-- ══════════════════════════════════════ -->
+    <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-500 ease-out" role="navigation" aria-label="Main navigation">
+        <div class="flex justify-between items-center max-w-7xl mx-auto px-6 lg:px-8 h-20">
+            <a href="#" class="flex items-center gap-3 group" aria-label="ColdReach Home">
+                <div class="w-10 h-10 rounded-xl primary-cta-gradient flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-shadow duration-300">
+                    <span class="text-white font-black text-xl relative z-10">C</span>
+                </div>
+                <span class="text-xl font-extrabold tracking-tight text-white hidden sm:block">ColdReach</span>
+            </a>
+
+            <div class="hidden lg:flex items-center gap-1" role="menubar">
+                <a href="#" class="relative px-4 py-2 text-sm font-medium text-white transition-colors group" role="menuitem">
+                    Product
+                    <span class="absolute bottom-0 left-4 right-4 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"></span>
+                </a>
+                <a href="#" class="px-4 py-2 text-sm font-medium text-slate-400 hover:text-white transition-colors relative group" role="menuitem">
+                    Solutions
+                    <span class="absolute bottom-0 left-4 right-4 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
+                </a>
+                <a href="#pricing" class="px-4 py-2 text-sm font-medium text-slate-400 hover:text-white transition-colors relative group" role="menuitem">
+                    Pricing
+                    <span class="absolute bottom-0 left-4 right-4 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
+                </a>
+                <a href="#" class="px-4 py-2 text-sm font-medium text-slate-400 hover:text-white transition-colors relative group" role="menuitem">
+                    Resources
+                    <span class="material-symbols-outlined text-xs ml-0.5 inline-block group-hover:rotate-180 transition-transform">expand_more</span>
+                    <span class="absolute bottom-0 left-4 right-4 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
+                </a>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <button class="hidden sm:block text-slate-400 hover:text-white transition-colors px-4 py-2 text-sm font-semibold rounded-lg hover:bg-white/5">Log in</button>
+                <button class="primary-cta-gradient text-white px-5 py-2.5 rounded-full font-bold text-sm hover:scale-105 active:scale-[0.98] transition-all duration-300 shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/40 relative z-10">Start Free Trial</button>
+                <button id="mobile-menu-btn" class="lg:hidden flex flex-col gap-1.5 p-2 rounded-lg hover:bg-white/5 transition-colors" aria-label="Toggle menu" aria-expanded="false">
+                    <span class="block w-5 h-0.5 bg-white rounded-full transition-all duration-300 origin-center" id="ham-1"></span>
+                    <span class="block w-5 h-0.5 bg-white rounded-full transition-all duration-300" id="ham-2"></span>
+                    <span class="block w-3.5 h-0.5 bg-white rounded-full transition-all duration-300 origin-center" id="ham-3"></span>
+                </button>
+            </div>
+        </div>
+        <div id="nav-border" class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/0 to-transparent transition-all duration-500"></div>
+    </nav>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- MOBILE MENU                            -->
+    <!-- ══════════════════════════════════════ -->
+    <div id="mobile-menu" class="mobile-menu fixed inset-0 z-40 lg:hidden" aria-hidden="true">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" id="menu-overlay"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-80 max-w-[85vw] bg-surface-dim border-l border-white/5 p-8 pt-24 flex flex-col gap-2">
+            <a href="#" class="text-white font-semibold py-3 px-4 rounded-xl bg-white/5 flex items-center justify-between">Product <span class="material-symbols-outlined text-sm text-on-surface-variant">arrow_forward</span></a>
+            <a href="#" class="text-slate-400 hover:text-white font-semibold py-3 px-4 rounded-xl hover:bg-white/5 transition-all">Solutions</a>
+            <a href="#pricing" class="text-slate-400 hover:text-white font-semibold py-3 px-4 rounded-xl hover:bg-white/5 transition-all">Pricing</a>
+            <a href="#" class="text-slate-400 hover:text-white font-semibold py-3 px-4 rounded-xl hover:bg-white/5 transition-all">Resources</a>
+            <div class="border-t border-white/5 my-4"></div>
+            <a href="#" class="text-slate-400 hover:text-white font-semibold py-3 px-4 rounded-xl hover:bg-white/5 transition-all">Log in</a>
+            <button class="primary-cta-gradient text-white py-3.5 rounded-2xl font-bold text-sm mt-2 relative z-10 shadow-lg shadow-indigo-500/20">Start Free Trial — It's Free</button>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- HERO SECTION                           -->
+    <!-- ══════════════════════════════════════ -->
+    <main id="main-content">
+        <section class="relative min-h-screen flex flex-col items-center pt-32 md:pt-40 overflow-hidden px-6" aria-label="Hero">
+
+            <!-- Background -->
+            <div class="absolute inset-0 grid-pattern pointer-events-none" aria-hidden="true"></div>
+            <div class="absolute inset-0 vignette-overlay" aria-hidden="true"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background pointer-events-none" aria-hidden="true"></div>
+
+            <!-- Floating Orbs -->
+            <div class="hero-gradient-orb animate-float-slow top-[5%] left-[10%] w-[350px] h-[350px] md:w-[500px] md:h-[500px] bg-indigo-600 rounded-full" aria-hidden="true"></div>
+            <div class="hero-gradient-orb animate-float-medium bottom-[15%] right-[5%] w-[300px] h-[300px] md:w-[450px] md:h-[450px] bg-purple-700 rounded-full" aria-hidden="true"></div>
+            <div class="hero-gradient-orb animate-float-fast top-[35%] right-[25%] w-[200px] h-[200px] md:w-[300px] md:h-[300px] bg-cyan-600 rounded-full" aria-hidden="true"></div>
+
+            <!-- Hero Content -->
+            <div class="relative z-10 max-w-5xl w-full text-center flex flex-col items-center">
+
+                <!-- Badge -->
+                <a href="#" class="reveal inline-flex items-center gap-2.5 px-5 py-2 rounded-full glass-panel mb-8 hover:bg-white/[0.06] hover:border-indigo-500/30 transition-all duration-300 group cursor-pointer">
+                    <span class="relative flex h-2 w-2" aria-hidden="true">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-tertiary opacity-60"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-tertiary"></span>
+                    </span>
+                    <span class="text-xs font-semibold tracking-wide text-on-surface-variant">New: AI-Powered Sequence Builder is here</span>
+                    <span class="material-symbols-outlined text-sm text-on-surface-variant group-hover:translate-x-1 transition-transform duration-300">arrow_forward</span>
+                </a>
+
+                <!-- Headline -->
+                <h1 class="reveal reveal-delay-1 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-on-surface leading-[1.08] mb-6">
+                    Stop Chasing Leads. <br class="hidden sm:block"/>
+                    <span class="gradient-text-impact">Start Booking Meetings.</span>
+                </h1>
+
+                <!-- Subheading -->
+                <p class="reveal reveal-delay-2 text-base sm:text-lg md:text-xl text-on-surface-variant max-w-2xl mb-10 md:mb-16 leading-relaxed">
+                    Stop wasting time on vanity metrics. ColdReach automates your entire outbound pipeline to deliver one specific outcome:
+                    <span class="text-white font-semibold">qualified sales meetings on your calendar.</span>
+                </p>
+
+                <!-- ═══════════════════════════════ -->
+                <!-- PROCESS FRAMEWORK CARD          -->
+                <!-- ═══════════════════════════════ -->
+                <div class="reveal reveal-delay-3 w-full max-w-5xl glass-panel rounded-2xl md:rounded-3xl p-6 md:p-8 lg:p-10 border border-white/10 shadow-2xl shadow-black/40 relative animate-pulse-glow">
+
+                    <!-- Steps -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+                        <!-- Step 1 -->
+                        <div class="relative flex flex-col items-center text-center group">
+                            <div class="w-14 h-14 rounded-2xl bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20 mb-4 group-hover:bg-indigo-500/20 group-hover:border-indigo-500/40 group-hover:scale-110 transition-all duration-300">
+                                <span class="material-symbols-outlined text-indigo-400 text-3xl">hub</span>
+                            </div>
+                            <h4 class="text-white font-bold mb-1.5 text-sm">1. Target</h4>
+                            <p class="text-[11px] text-on-surface-variant leading-relaxed">AI scans 50M+ profiles to find your perfect ICP match.</p>
+                            <div class="absolute top-7 left-[65%] w-[70%] h-[1.5px] results-step-line hidden md:block" aria-hidden="true"></div>
+                        </div>
+                        <!-- Step 2 -->
+                        <div class="relative flex flex-col items-center text-center group">
+                            <div class="w-14 h-14 rounded-2xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20 mb-4 group-hover:bg-purple-500/20 group-hover:border-purple-500/40 group-hover:scale-110 transition-all duration-300">
+                                <span class="material-symbols-outlined text-purple-400 text-3xl">auto_fix_high</span>
+                            </div>
+                            <h4 class="text-white font-bold mb-1.5 text-sm">2. Personalize</h4>
+                            <p class="text-[11px] text-on-surface-variant leading-relaxed">Every email is uniquely written to solve their specific pain points.</p>
+                            <div class="absolute top-7 left-[65%] w-[70%] h-[1.5px] results-step-line hidden md:block" aria-hidden="true"></div>
+                        </div>
+                        <!-- Step 3 -->
+                        <div class="relative flex flex-col items-center text-center group">
+                            <div class="w-14 h-14 rounded-2xl bg-cyan-500/10 flex items-center justify-center border border-cyan-500/20 mb-4 group-hover:bg-cyan-500/20 group-hover:border-cyan-500/40 group-hover:scale-110 transition-all duration-300">
+                                <span class="material-symbols-outlined text-cyan-400 text-3xl">mark_email_read</span>
+                            </div>
+                            <h4 class="text-white font-bold mb-1.5 text-sm">3. Engage</h4>
+                            <p class="text-[11px] text-on-surface-variant leading-relaxed">Advanced deliverability ensures 98%+ inbox placement rate.</p>
+                            <div class="absolute top-7 left-[65%] w-[70%] h-[1.5px] results-step-line hidden md:block" aria-hidden="true"></div>
+                        </div>
+                        <!-- Step 4 -->
+                        <div class="relative flex flex-col items-center text-center group">
+                            <div class="w-14 h-14 rounded-2xl bg-green-500/15 flex items-center justify-center border border-green-500/30 mb-4 shadow-[0_0_25px_rgba(34,197,94,0.2)] group-hover:shadow-[0_0_35px_rgba(34,197,94,0.35)] group-hover:scale-110 transition-all duration-300">
+                                <span class="material-symbols-outlined text-green-400 text-3xl">calendar_month</span>
+                            </div>
+                            <h4 class="text-green-400 font-bold mb-1.5 text-sm">Result: Booked ✓</h4>
+                            <p class="text-[11px] text-on-surface-variant leading-relaxed font-medium">Predictable pipeline growth and increased revenue.</p>
+                        </div>
+                    </div>
+
+                    <!-- ══════════════════════════════════════ -->
+                    <!-- STATS ROW — BIGGER SIZE ✅             -->
+                    <!-- ══════════════════════════════════════ -->
+                    <div class="mt-10 pt-8 border-t border-white/5">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
+                            <!-- Stat 1: ROI -->
+                            <div class="glass-panel-hover rounded-2xl p-6 text-center cursor-default group tooltip-wrapper">
+                                <div class="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20 mx-auto mb-4 group-hover:bg-indigo-500/20 group-hover:scale-110 transition-all duration-300">
+                                    <span class="material-symbols-outlined text-indigo-400 text-2xl">trending_up</span>
+                                </div>
+                                <p class="text-[10px] uppercase tracking-[0.15em] text-on-surface-variant mb-2 font-semibold">Projected ROI</p>
+                                <p class="text-4xl md:text-5xl font-black text-white mb-1">12.5x</p>
+                                <span class="text-sm font-semibold text-green-400">Average Return</span>
+                                <span class="tooltip-text">Based on 500+ customer results</span>
+                            </div>
+
+                            <!-- Stat 2: Time -->
+                            <div class="glass-panel-hover rounded-2xl p-6 text-center cursor-default group">
+                                <div class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20 mx-auto mb-4 group-hover:bg-purple-500/20 group-hover:scale-110 transition-all duration-300">
+                                    <span class="material-symbols-outlined text-purple-400 text-2xl">schedule</span>
+                                </div>
+                                <p class="text-[10px] uppercase tracking-[0.15em] text-on-surface-variant mb-2 font-semibold">Time Saved / Week</p>
+                                <p class="text-4xl md:text-5xl font-black text-white mb-1">15h</p>
+                                <span class="text-sm font-semibold text-purple-400">Per Team Member</span>
+                            </div>
+
+                            <!-- Stat 3: Response -->
+                            <div class="glass-panel-hover rounded-2xl p-6 text-center cursor-default group">
+                                <div class="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center border border-cyan-500/20 mx-auto mb-4 group-hover:bg-cyan-500/20 group-hover:scale-110 transition-all duration-300">
+                                    <span class="material-symbols-outlined text-cyan-400 text-2xl">bolt</span>
+                                </div>
+                                <p class="text-[10px] uppercase tracking-[0.15em] text-on-surface-variant mb-2 font-semibold">Response Boost</p>
+                                <p class="text-4xl md:text-5xl font-black text-white mb-1">+340%</p>
+                                <span class="text-sm font-semibold text-cyan-400">vs Manual Outreach</span>
+                            </div>
+                        </div>
+
+                        <!-- CTA Button -->
+                        <div class="flex justify-center">
+                            <button class="primary-cta-gradient text-white px-10 py-4 rounded-2xl font-bold transition-all duration-300 hover:scale-105 active:scale-[0.98] shadow-xl shadow-indigo-500/20 hover:shadow-indigo-500/40 text-base relative z-10 w-full sm:w-auto">
+                                See Your Growth Potential →
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ══════════════════════════════════════ -->
+                <!-- TRUST BADGES — CLEAN ✅                -->
+                <!-- ══════════════════════════════════════ -->
+                <div class="reveal reveal-delay-4 flex flex-wrap justify-center gap-4 mt-12 w-full max-w-3xl mx-auto">
+                    <div class="flex items-center gap-2.5 px-5 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:border-tertiary/30 hover:bg-white/[0.05] transition-all duration-300 cursor-default group">
+                        <span class="material-symbols-outlined text-lg text-tertiary group-hover:scale-110 transition-transform">verified_user</span>
+                        <span class="text-sm font-bold text-on-surface-variant tracking-wide uppercase group-hover:text-white/70 transition-colors">SOC 2</span>
+                    </div>
+                    <div class="flex items-center gap-2.5 px-5 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:border-tertiary/30 hover:bg-white/[0.05] transition-all duration-300 cursor-default group">
+                        <span class="material-symbols-outlined text-lg text-tertiary group-hover:scale-110 transition-transform">gavel</span>
+                        <span class="text-sm font-bold text-on-surface-variant tracking-wide uppercase group-hover:text-white/70 transition-colors">GDPR</span>
+                    </div>
+                    <div class="flex items-center gap-2.5 px-5 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:border-tertiary/30 hover:bg-white/[0.05] transition-all duration-300 cursor-default group">
+                        <span class="material-symbols-outlined text-lg text-tertiary group-hover:scale-110 transition-transform">credit_card_off</span>
+                        <span class="text-sm font-bold text-on-surface-variant tracking-wide uppercase group-hover:text-white/70 transition-colors">No CC Required</span>
+                    </div>
+                    <div class="flex items-center gap-2.5 px-5 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:border-tertiary/30 hover:bg-white/[0.05] transition-all duration-300 cursor-default group">
+                        <span class="material-symbols-outlined text-lg text-tertiary group-hover:scale-110 transition-transform">calendar_today</span>
+                        <span class="text-sm font-bold text-on-surface-variant tracking-wide uppercase group-hover:text-white/70 transition-colors">14-Day Trial</span>
+                    </div>
+                </div>
+
+            </div> <!-- end hero-content -->
+
+            <!-- ══════════════════════════════════════ -->
+            <!-- ROI DASHBOARD — STATS + CHART ✅       -->
+            <!-- ══════════════════════════════════════ -->
+            <div class="reveal reveal-delay-5 relative mt-20 md:mt-32 w-full max-w-4xl mx-auto z-20 pb-20">
+                <div class="absolute -inset-20 bg-gradient-to-t from-indigo-500/5 via-purple-500/5 to-transparent rounded-full filter blur-3xl pointer-events-none" aria-hidden="true"></div>
+
+                <div class="text-center mb-10">
+                    <h2 class="text-xl sm:text-2xl font-bold text-white mb-2">Proof in Performance</h2>
+                    <p class="text-on-surface-variant text-sm">Real data from a B2B SaaS Agency using ColdReach over 30 days.</p>
+                </div>
+
+                <!-- Browser Window -->
+                <div class="glass-panel rounded-2xl md:rounded-3xl overflow-hidden border border-white/8 shadow-[0_40px_100px_rgba(0,0,0,0.6)]">
+                    <!-- Top Bar -->
+                    <div class="bg-white/[0.03] border-b border-white/5 px-4 sm:px-6 py-3 flex items-center justify-between">
+                        <div class="flex gap-1.5" aria-hidden="true">
+                            <div class="w-2.5 h-2.5 rounded-full bg-red-500/50 hover:bg-red-500 transition-colors"></div>
+                            <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/50 hover:bg-yellow-500 transition-colors"></div>
+                            <div class="w-2.5 h-2.5 rounded-full bg-green-500/50 hover:bg-green-500 transition-colors"></div>
+                        </div>
+                        <div class="text-[10px] text-on-surface-variant tracking-wider flex items-center gap-2 uppercase">
+                            <span class="material-symbols-outlined text-[12px]">analytics</span>
+                            <span class="hidden sm:inline">ROI Dashboard — 30 Day Snapshot</span>
+                            <span class="sm:hidden">ROI Dashboard</span>
+                        </div>
+                        <div class="w-10"></div>
+                    </div>
+
+                    <!-- Stat Cards -->
+                    <div class="p-5 sm:p-8 md:p-10 pb-0 sm:pb-0 md:pb-0">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
+                            <div class="glass-panel-hover stat-card-glow rounded-2xl p-5 md:p-6 text-center cursor-default group">
+                                <div class="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center border border-cyan-500/20 mx-auto mb-3 group-hover:bg-cyan-500/20 group-hover:scale-110 transition-all duration-300">
+                                    <span class="material-symbols-outlined text-cyan-400 text-xl">mark_email_read</span>
+                                </div>
+                                <div class="text-cyan-400 font-black text-3xl md:text-4xl mb-1.5 tabular-nums">98.2%</div>
+                                <p class="text-[10px] font-bold uppercase tracking-[0.12em] text-on-surface-variant mb-3">Inbox Deliverability</p>
+                                <p class="text-[11px] text-slate-500 leading-relaxed">Proprietary AI warm-up bypasses spam filters automatically.</p>
+                                <div class="flex items-center justify-center gap-1 mt-3 text-[10px] text-green-400 font-semibold">
+                                    <span class="material-symbols-outlined text-xs">trending_up</span>+2.1% vs last month
+                                </div>
+                            </div>
+                            <div class="glass-panel-hover stat-card-glow rounded-2xl p-5 md:p-6 text-center cursor-default group">
+                                <div class="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20 mx-auto mb-3 group-hover:bg-purple-500/20 group-hover:scale-110 transition-all duration-300">
+                                    <span class="material-symbols-outlined text-purple-400 text-xl">reply</span>
+                                </div>
+                                <div class="text-purple-400 font-black text-3xl md:text-4xl mb-1.5 tabular-nums">24%</div>
+                                <p class="text-[10px] font-bold uppercase tracking-[0.12em] text-on-surface-variant mb-3">Positive Reply Rate</p>
+                                <p class="text-[11px] text-slate-500 leading-relaxed">Hyper-personalized hooks drive meaningful conversations.</p>
+                                <div class="flex items-center justify-center gap-1 mt-3 text-[10px] text-green-400 font-semibold">
+                                    <span class="material-symbols-outlined text-xs">trending_up</span>+8.4% vs last month
+                                </div>
+                            </div>
+                            <div class="glass-panel-hover stat-card-glow rounded-2xl p-5 md:p-6 text-center cursor-default group">
+                                <div class="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center border border-green-500/20 mx-auto mb-3 group-hover:bg-green-500/20 group-hover:scale-110 transition-all duration-300">
+                                    <span class="material-symbols-outlined text-green-400 text-xl">calendar_month</span>
+                                </div>
+                                <div class="text-green-400 font-black text-3xl md:text-4xl mb-1.5 tabular-nums">142</div>
+                                <p class="text-[10px] font-bold uppercase tracking-[0.12em] text-on-surface-variant mb-3">Meetings Booked</p>
+                                <p class="text-[11px] text-slate-500 leading-relaxed">Qualified prospects ready to buy, straight to your CRM.</p>
+                                <div class="flex items-center justify-center gap-1 mt-3 text-[10px] text-green-400 font-semibold">
+                                    <span class="material-symbols-outlined text-xs">trending_up</span>+34 vs last month
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Growth Chart -->
+                    <div class="p-5 sm:p-8 md:p-10 pt-6 sm:pt-6 md:pt-8">
+                        <div class="bg-gradient-to-t from-indigo-500/[0.03] to-transparent rounded-xl border border-white/5 p-4 sm:p-6">
+                            <!-- Chart Header -->
+                            <div class="flex items-center justify-between mb-6">
+                                <div>
+                                    <p class="text-sm font-semibold text-white">Growth Trajectory</p>
+                                    <p class="text-[10px] text-slate-500 mt-0.5">Weekly outbound performance</p>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <div class="flex items-center gap-1.5">
+                                        <div class="w-2.5 h-2.5 rounded-sm bg-gradient-to-t from-indigo-600 to-indigo-400" aria-hidden="true"></div>
+                                        <span class="text-[10px] text-on-surface-variant font-medium">Emails Sent</span>
+                                    </div>
+                                    <div class="flex items-center gap-1.5">
+                                        <div class="w-2.5 h-2.5 rounded-sm bg-gradient-to-t from-green-500 to-green-400" aria-hidden="true"></div>
+                                        <span class="text-[10px] text-on-surface-variant font-medium">Meetings</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Chart -->
+                            <div class="relative">
+                                <!-- Y-Axis -->
+                                <div class="absolute left-0 top-0 bottom-10 flex flex-col justify-between text-[9px] text-slate-600 font-medium w-7 z-10">
+                                    <span>100%</span><span>75%</span><span>50%</span><span>25%</span><span>0</span>
+                                </div>
+                                <!-- Grid Lines -->
+                                <div class="ml-9 relative" aria-hidden="true">
+                                    <div class="absolute top-0 left-0 right-0 h-px bg-white/[0.04]"></div>
+                                    <div class="absolute top-1/4 left-0 right-0 h-px bg-white/[0.04]"></div>
+                                    <div class="absolute top-1/2 left-0 right-0 h-px bg-white/[0.04]"></div>
+                                    <div class="absolute top-3/4 left-0 right-0 h-px bg-white/[0.04]"></div>
+                                    <div class="absolute bottom-0 left-0 right-0 h-px bg-white/[0.06]"></div>
+                                </div>
+
+                                <!-- Bars -->
+                                <div class="ml-9 h-48 sm:h-56 flex items-end gap-2 sm:gap-3 md:gap-4" role="img" aria-label="Growth chart">
+                                    <!-- W1-B1 -->
+                                    <div class="flex-1 flex gap-[3px] items-end h-full group relative cursor-pointer">
+                                        <div class="opacity-0 group-hover:opacity-100 absolute -top-9 left-1/2 -translate-x-1/2 bg-surface-container-highest text-[9px] px-2.5 py-1 rounded-md text-white whitespace-nowrap transition-all duration-200 border border-white/10 z-20 shadow-xl pointer-events-none"><span class="text-indigo-400 font-bold">1.2K</span> sent · <span class="text-green-400 font-bold">8</span> meetings</div>
+                                        <div class="flex-1 bg-gradient-to-t from-indigo-600/50 to-indigo-400/30 rounded-t-sm group-hover:from-indigo-600/70 group-hover:to-indigo-400/50 transition-all duration-300" style="height:18%"></div>
+                                        <div class="flex-1 bg-gradient-to-t from-green-500/40 to-green-400/20 rounded-t-sm group-hover:from-green-500/60 group-hover:to-green-400/40 transition-all duration-300" style="height:5%"></div>
+                                    </div>
+                                    <!-- W1-B2 -->
+                                    <div class="flex-1 flex gap-[3px] items-end h-full group relative cursor-pointer">
+                                        <div class="opacity-0 group-hover:opacity-100 absolute -top-9 left-1/2 -translate-x-1/2 bg-surface-container-highest text-[9px] px-2.5 py-1 rounded-md text-white whitespace-nowrap transition-all duration-200 border border-white/10 z-20 shadow-xl pointer-events-none"><span class="text-indigo-400 font-bold">2.4K</span> sent · <span class="text-green-400 font-bold">14</span> meetings</div>
+                                        <div class="flex-1 bg-gradient-to-t from-indigo-600/50 to-indigo-400/30 rounded-t-sm group-hover:from-indigo-600/70 group-hover:to-indigo-400/50 transition-all duration-300" style="height:30%"></div>
+                                        <div class="flex-1 bg-gradient-to-t from-green-500/40 to-green-400/20 rounded-t-sm group-hover:from-green-500/60 group-hover:to-green-400/40 transition-all duration-300" style="height:10%"></div>
+                                    </div>
+                                    <!-- W2-B3 -->
+                                    <div class="flex-1 flex gap-[3px] items-end h-full group relative cursor-pointer">
+                                        <div class="opacity-0 group-hover:opacity-100 absolute -top-9 left-1/2 -translate-x-1/2 bg-surface-container-highest text-[9px] px-2.5 py-1 rounded-md text-white whitespace-nowrap transition-all duration-200 border border-white/10 z-20 shadow-xl pointer-events-none"><span class="text-indigo-400 font-bold">3.1K</span> sent · <span class="text-green-400 font-bold">22</span> meetings</div>
+                                        <div class="flex-1 bg-gradient-to-t from-indigo-600/55 to-indigo-400/35 rounded-t-sm group-hover:from-indigo-600/75 group-hover:to-indigo-400/55 transition-all duration-300" style="height:35%"></div>
+                                        <div class="flex-1 bg-gradient-to-t from-green-500/45 to-green-400/25 rounded-t-sm group-hover:from-green-500/65 group-hover:to-green-400/45 transition-all duration-300" style="height:16%"></div>
+                                    </div>
+                                    <!-- W2-B4 -->
+                                    <div class="flex-1 flex gap-[3px] items-end h-full group relative cursor-pointer">
+                                        <div class="opacity-0 group-hover:opacity-100 absolute -top-9 left-1/2 -translate-x-1/2 bg-surface-container-highest text-[9px] px-2.5 py-1 rounded-md text-white whitespace-nowrap transition-all duration-200 border border-white/10 z-20 shadow-xl pointer-events-none"><span class="text-indigo-400 font-bold">5.8K</span> sent · <span class="text-green-400 font-bold">31</span> meetings</div>
+                                        <div class="flex-1 bg-gradient-to-t from-indigo-600/60 to-indigo-400/40 rounded-t-sm group-hover:from-indigo-600/80 group-hover:to-indigo-400/60 transition-all duration-300" style="height:50%"></div>
+                                        <div class="flex-1 bg-gradient-to-t from-green-500/50 to-green-400/30 rounded-t-sm group-hover:from-green-500/70 group-hover:to-green-400/50 transition-all duration-300" style="height:24%"></div>
+                                    </div>
+                                    <!-- W3-B5 -->
+                                    <div class="flex-1 flex gap-[3px] items-end h-full group relative cursor-pointer">
+                                        <div class="opacity-0 group-hover:opacity-100 absolute -top-9 left-1/2 -translate-x-1/2 bg-surface-container-highest text-[9px] px-2.5 py-1 rounded-md text-white whitespace-nowrap transition-all duration-200 border border-white/10 z-20 shadow-xl pointer-events-none"><span class="text-indigo-400 font-bold">6.2K</span> sent · <span class="text-green-400 font-bold">38</span> meetings</div>
+                                        <div class="flex-1 bg-gradient-to-t from-indigo-600/65 to-indigo-400/45 rounded-t-sm group-hover:from-indigo-600/85 group-hover:to-indigo-400/65 transition-all duration-300" style="height:55%"></div>
+                                        <div class="flex-1 bg-gradient-to-t from-green-500/55 to-green-400/35 rounded-t-sm group-hover:from-green-500/75 group-hover:to-green-400/55 transition-all duration-300" style="height:30%"></div>
+                                    </div>
+                                    <!-- W3-B6 -->
+                                    <div class="flex-1 flex gap-[3px] items-end h-full group relative cursor-pointer">
+                                        <div class="opacity-0 group-hover:opacity-100 absolute -top-9 left-1/2 -translate-x-1/2 bg-surface-container-highest text-[9px] px-2.5 py-1 rounded-md text-white whitespace-nowrap transition-all duration-200 border border-white/10 z-20 shadow-xl pointer-events-none"><span class="text-indigo-400 font-bold">8.4K</span> sent · <span class="text-green-400 font-bold">52</span> meetings</div>
+                                        <div class="flex-1 bg-gradient-to-t from-indigo-600/70 to-indigo-400/50 rounded-t-sm group-hover:from-indigo-600/90 group-hover:to-indigo-400/70 transition-all duration-300" style="height:68%"></div>
+                                        <div class="flex-1 bg-gradient-to-t from-green-500/60 to-green-400/40 rounded-t-sm group-hover:from-green-500/80 group-hover:to-green-400/60 transition-all duration-300" style="height:40%"></div>
+                                    </div>
+                                    <!-- W4-B7 -->
+                                    <div class="flex-1 flex gap-[3px] items-end h-full group relative cursor-pointer">
+                                        <div class="opacity-0 group-hover:opacity-100 absolute -top-9 left-1/2 -translate-x-1/2 bg-surface-container-highest text-[9px] px-2.5 py-1 rounded-md text-white whitespace-nowrap transition-all duration-200 border border-white/10 z-20 shadow-xl pointer-events-none"><span class="text-indigo-400 font-bold">9.1K</span> sent · <span class="text-green-400 font-bold">64</span> meetings</div>
+                                        <div class="flex-1 bg-gradient-to-t from-indigo-600/75 to-indigo-400/55 rounded-t-sm group-hover:from-indigo-600/95 group-hover:to-indigo-400/75 transition-all duration-300" style="height:78%"></div>
+                                        <div class="flex-1 bg-gradient-to-t from-green-500/65 to-green-400/45 rounded-t-sm group-hover:from-green-500/85 group-hover:to-green-400/65 transition-all duration-300" style="height:50%"></div>
+                                    </div>
+                                    <!-- W4-B8 CURRENT -->
+                                    <div class="flex-1 flex gap-[3px] items-end h-full group relative cursor-pointer">
+                                        <div class="absolute -top-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center">
+                                            <div class="w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-indigo-500 mt-[-1px]"></div>
+                                        </div>
+                                        <div class="opacity-0 group-hover:opacity-100 absolute -top-[72px] left-1/2 -translate-x-1/2 bg-surface-container-highest text-[9px] px-2.5 py-1 rounded-md text-white whitespace-nowrap transition-all duration-200 border border-white/10 z-30 shadow-xl pointer-events-none"><span class="text-indigo-400 font-bold">11.2K</span> sent · <span class="text-green-400 font-bold">82</span> meetings</div>
+                                        <div class="flex-1 bg-gradient-to-t from-indigo-600 to-indigo-400/80 rounded-t-sm shadow-[0_0_20px_rgba(99,102,241,0.25)] group-hover:shadow-[0_0_30px_rgba(99,102,241,0.4)] transition-all duration-300" style="height:92%"></div>
+                                        <div class="flex-1 bg-gradient-to-t from-green-500/80 to-green-400/60 rounded-t-sm shadow-[0_0_15px_rgba(34,197,94,0.15)] group-hover:shadow-[0_0_25px_rgba(34,197,94,0.3)] transition-all duration-300" style="height:62%"></div>
+                                    </div>
+                                </div>
+
+                                <!-- X-Axis -->
+                                <div class="ml-9 flex justify-between mt-4">
+                                    <div class="flex-[2] text-center"><div class="text-[10px] text-slate-600 font-semibold uppercase tracking-[0.12em]">Week 1</div></div>
+                                    <div class="flex-[2] text-center"><div class="text-[10px] text-slate-600 font-semibold uppercase tracking-[0.12em]">Week 2</div></div>
+                                    <div class="flex-[2] text-center"><div class="text-[10px] text-slate-600 font-semibold uppercase tracking-[0.12em]">Week 3</div></div>
+                                    <div class="flex-[2] text-center"><div class="text-[10px] text-indigo-400 font-bold uppercase tracking-[0.12em]">Week 4</div></div>
+                                </div>
+                            </div>
+
+                            <!-- Chart Footer -->
+                            <div class="mt-6 pt-4 border-t border-white/[0.04] flex flex-col sm:flex-row flex-wrap justify-between gap-3">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 rounded-lg bg-green-500/10 flex items-center justify-center"><span class="material-symbols-outlined text-green-400 text-sm">trending_up</span></div>
+                                    <span class="text-[11px] text-green-400 font-semibold">+340% growth in meetings booked</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 rounded-lg bg-indigo-500/10 flex items-center justify-center"><span class="material-symbols-outlined text-indigo-400 text-sm">speed</span></div>
+                                    <span class="text-[11px] text-on-surface-variant">Avg. ramp time: <span class="text-white font-semibold">12 days</span></span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 rounded-lg bg-purple-500/10 flex items-center justify-center"><span class="material-symbols-outlined text-purple-400 text-sm">psychology</span></div>
+                                    <span class="text-[11px] text-on-surface-variant">AI confidence: <span class="text-white font-semibold">94%</span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ══════════════════════════════════════ -->
+        <!-- SOCIAL PROOF                           -->
+        <!-- ══════════════════════════════════════ -->
+        <section class="py-20 md:py-24 relative z-10 bg-background" aria-label="Social proof">
+            <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-500/20 to-transparent" aria-hidden="true"></div>
+            <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                <p class="reveal text-center text-on-surface-variant font-bold tracking-[0.2em] uppercase text-[10px] mb-12">Powering Outcomes For</p>
+                <div class="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6 gap-6 md:gap-8 items-center max-w-4xl mx-auto">
+                    <div class="logo-item reveal reveal-delay-1 flex justify-center items-center gap-2 py-2 cursor-default"><span class="material-symbols-outlined text-2xl">payments</span><span class="font-bold text-sm hidden sm:inline">Stripe</span></div>
+                    <div class="logo-item reveal reveal-delay-1 flex justify-center items-center gap-2 py-2 cursor-default"><span class="material-symbols-outlined text-2xl">task</span><span class="font-bold text-sm hidden sm:inline">Notion</span></div>
+                    <div class="logo-item reveal reveal-delay-2 flex justify-center items-center gap-2 py-2 cursor-default"><span class="material-symbols-outlined text-2xl">shopping_cart</span><span class="font-bold text-sm hidden sm:inline">Shopify</span></div>
+                    <div class="logo-item reveal reveal-delay-2 flex justify-center items-center gap-2 py-2 cursor-default"><span class="material-symbols-outlined text-2xl">terminal</span><span class="font-bold text-sm hidden sm:inline">Github</span></div>
+                    <div class="logo-item reveal reveal-delay-3 flex justify-center items-center gap-2 py-2 cursor-default"><span class="material-symbols-outlined text-2xl">cloud</span><span class="font-bold text-sm hidden sm:inline">Slack</span></div>
+                    <div class="logo-item reveal reveal-delay-3 flex justify-center items-center gap-2 py-2 cursor-default"><span class="material-symbols-outlined text-2xl">bolt</span><span class="font-bold text-sm hidden sm:inline">Zapier</span></div>
+                </div>
+                <div class="mt-20 md:mt-24 grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 max-w-4xl mx-auto">
+                    <div class="reveal reveal-delay-1 text-center group cursor-default">
+                        <h4 class="text-3xl md:text-4xl font-black text-on-surface mb-2 tabular-nums group-hover:text-primary transition-colors duration-300">5,000+</h4>
+                        <p class="text-on-surface-variant text-[10px] font-bold uppercase tracking-[0.15em]">Active Users</p>
+                    </div>
+                    <div class="reveal reveal-delay-2 text-center group cursor-default">
+                        <h4 class="text-3xl md:text-4xl font-black text-on-surface mb-2 tabular-nums group-hover:text-primary transition-colors duration-300">50M+</h4>
+                        <p class="text-on-surface-variant text-[10px] font-bold uppercase tracking-[0.15em]">Emails Delivered</p>
+                    </div>
+                    <div class="reveal reveal-delay-3 text-center group cursor-default">
+                        <h4 class="text-3xl md:text-4xl font-black text-on-surface mb-2 tabular-nums group-hover:text-primary transition-colors duration-300">98.7%</h4>
+                        <p class="text-on-surface-variant text-[10px] font-bold uppercase tracking-[0.15em]">Deliverability Rate</p>
+                    </div>
+                    <div class="reveal reveal-delay-4 text-center group cursor-default">
+                        <div class="flex items-center justify-center gap-1.5 mb-2">
+                            <h4 class="text-3xl md:text-4xl font-black text-on-surface tabular-nums group-hover:text-primary transition-colors duration-300">4.9</h4>
+                            <span class="material-symbols-outlined text-tertiary text-2xl" style="font-variation-settings: 'FILL' 1;" aria-hidden="true">star</span>
+                        </div>
+                        <p class="text-on-surface-variant text-[10px] font-bold uppercase tracking-[0.15em]">Rating on G2</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- FOOTER                                 -->
+    <!-- ══════════════════════════════════════ -->
+    <footer class="bg-background w-full py-16 md:py-20 px-6 lg:px-8 border-t border-white/5 text-sm" role="contentinfo">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-10 md:gap-12">
+                <div class="col-span-2">
+                    <a href="#" class="flex items-center gap-2.5 mb-5 group">
+                        <div class="w-8 h-8 rounded-lg primary-cta-gradient flex items-center justify-center relative z-10"><span class="text-white font-black text-sm">C</span></div>
+                        <span class="text-lg font-bold text-white">ColdReach</span>
+                    </a>
+                    <p class="text-slate-500 mb-6 max-w-xs leading-relaxed text-[13px]">The outcome-first outbound engine for business owners who value ROI over busywork.</p>
+                    <div class="flex gap-3 mb-6">
+                        <a href="#" class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-slate-500 hover:text-white hover:bg-white/10 transition-all" aria-label="Twitter"><span class="material-symbols-outlined text-base">close</span></a>
+                        <a href="#" class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-slate-500 hover:text-white hover:bg-white/10 transition-all" aria-label="LinkedIn"><span class="material-symbols-outlined text-base">share</span></a>
+                        <a href="#" class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-slate-500 hover:text-white hover:bg-white/10 transition-all" aria-label="YouTube"><span class="material-symbols-outlined text-base">play_arrow</span></a>
+                    </div>
+                    <p class="text-slate-600 text-xs">© 2025 ColdReach AI. All rights reserved.</p>
+                </div>
+                <div>
+                    <h5 class="text-white font-bold mb-4 text-xs uppercase tracking-wider">Product</h5>
+                    <ul class="space-y-3">
+                        <li><a class="text-slate-500 hover:text-slate-200 transition-colors text-[13px] hover:translate-x-0.5 inline-block" href="#">Sequences</a></li>
+                        <li><a class="text-slate-500 hover:text-slate-200 transition-colors text-[13px] hover:translate-x-0.5 inline-block" href="#">Lead Finder</a></li>
+                        <li><a class="text-slate-500 hover:text-slate-200 transition-colors text-[13px] hover:translate-x-0.5 inline-block" href="#">AI Personalization</a></li>
+                        <li><a class="text-slate-500 hover:text-slate-200 transition-colors text-[13px] hover:translate-x-0.5 inline-block" href="#">Email Warm-up</a></li>
+                        <li><a class="text-slate-500 hover:text-slate-200 transition-colors text-[13px] hover:translate-x-0.5 inline-block" href="#">Integrations</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-white font-bold mb-4 text-xs uppercase tracking-wider">Company</h5>
+                    <ul class="space-y-3">
+                        <li><a class="text-slate-500 hover:text-slate-200 transition-colors text-[13px] hover:translate-x-0.5 inline-block" href="#">About Us</a></li>
+                        <li><a class="text-slate-500 hover:text-slate-200 transition-colors text-[13px] hover:translate-x-0.5 inline-flex items-center gap-2" href="#">Careers <span class="text-[9px] font-bold uppercase bg-green-500/20 text-green-400 px-1.5 py-0.5 rounded-full tracking-wide">Hiring</span></a></li>
+                        <li><a class="text-slate-500 hover:text-slate-200 transition-colors text-[13px] hover:translate-x-0.5 inline-block" href="#">Blog</a></li>
+                        <li><a class="text-slate-500 hover:text-slate-200 transition-colors text-[13px] hover:translate-x-0.5 inline-block" href="#">Partners</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-white font-bold mb-4 text-xs uppercase tracking-wider">Legal</h5>
+                    <ul class="space-y-3">
+                        <li><a class="text-slate-500 hover:text-slate-200 transition-colors text-[13px] hover:translate-x-0.5 inline-block" href="#">Privacy Policy</a></li>
+                        <li><a class="text-slate-500 hover:text-slate-200 transition-colors text-[13px] hover:translate-x-0.5 inline-block" href="#">Terms of Service</a></li>
+                        <li><a class="text-slate-500 hover:text-slate-200 transition-colors text-[13px] hover:translate-x-0.5 inline-block" href="#">Security</a></li>
+                        <li><a class="text-slate-500 hover:text-slate-200 transition-colors text-[13px] hover:translate-x-0.5 inline-block" href="#">GDPR</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-white font-bold mb-4 text-xs uppercase tracking-wider">Support</h5>
+                    <ul class="space-y-3">
+                        <li><a class="text-slate-500 hover:text-slate-200 transition-colors text-[13px] hover:translate-x-0.5 inline-block" href="#">Help Center</a></li>
+                        <li><a class="text-slate-500 hover:text-slate-200 transition-colors text-[13px] hover:translate-x-0.5 inline-block" href="#">API Docs</a></li>
+                        <li><a class="text-slate-500 hover:text-slate-200 transition-colors text-[13px] hover:translate-x-0.5 inline-flex items-center gap-2" href="#">Status <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span></a></li>
+                        <li><a class="text-slate-500 hover:text-slate-200 transition-colors text-[13px] hover:translate-x-0.5 inline-block" href="#">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-12 pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <p class="text-slate-600 text-xs">Built with precision for sales teams worldwide.</p>
+                <div class="flex items-center gap-4 text-xs text-slate-600">
+                    <a href="#" class="hover:text-slate-400 transition-colors">Privacy</a><span aria-hidden="true">·</span>
+                    <a href="#" class="hover:text-slate-400 transition-colors">Terms</a><span aria-hidden="true">·</span>
+                    <a href="#" class="hover:text-slate-400 transition-colors">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- JAVASCRIPT                             -->
+    <!-- ══════════════════════════════════════ -->
+    <script>
+    (function() {
+        'use strict';
+
+        const navbar = document.getElementById('navbar');
+        const navBorder = document.getElementById('nav-border');
+        let lastScroll = 0, ticking = false;
+
+        function updateNavbar() {
+            const y = window.scrollY;
+            if (y > 60) {
+                navbar.style.background = 'rgba(6,6,10,0.85)';
+                navbar.style.backdropFilter = 'blur(24px) saturate(1.2)';
+                navbar.style.webkitBackdropFilter = 'blur(24px) saturate(1.2)';
+                navBorder.style.background = 'linear-gradient(90deg,transparent,rgba(255,255,255,0.06),transparent)';
+                navbar.style.boxShadow = '0 4px 24px rgba(0,0,0,0.3)';
+            } else {
+                navbar.style.background = 'rgba(6,6,10,0.4)';
+                navbar.style.backdropFilter = 'blur(12px)';
+                navbar.style.webkitBackdropFilter = 'blur(12px)';
+                navBorder.style.background = 'transparent';
+                navbar.style.boxShadow = 'none';
+            }
+            if (window.innerWidth < 768) {
+                navbar.style.transform = (y > lastScroll && y > 200) ? 'translateY(-100%)' : 'translateY(0)';
+            }
+            lastScroll = y; ticking = false;
+        }
+
+        window.addEventListener('scroll', function() {
+            if (!ticking) { requestAnimationFrame(updateNavbar); ticking = true; }
+        }, { passive: true });
+
+        // Mobile Menu
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuOverlay = document.getElementById('menu-overlay');
+        const ham1 = document.getElementById('ham-1');
+        const ham2 = document.getElementById('ham-2');
+        const ham3 = document.getElementById('ham-3');
+        let menuOpen = false;
+
+        function toggleMenu() {
+            menuOpen = !menuOpen;
+            if (menuOpen) {
+                mobileMenu.classList.add('open');
+                mobileMenu.setAttribute('aria-hidden','false');
+                mobileBtn.setAttribute('aria-expanded','true');
+                document.body.style.overflow = 'hidden';
+                ham1.style.transform = 'rotate(45deg) translate(4px,4px)';
+                ham2.style.opacity = '0';
+                ham3.style.transform = 'rotate(-45deg) translate(3px,-3px)';
+                ham3.style.width = '20px';
+            } else {
+                mobileMenu.classList.remove('open');
+                mobileMenu.setAttribute('aria-hidden','true');
+                mobileBtn.setAttribute('aria-expanded','false');
+                document.body.style.overflow = '';
+                ham1.style.transform = '';
+                ham2.style.opacity = '1';
+                ham3.style.transform = '';
+                ham3.style.width = '';
+            }
+        }
+
+        mobileBtn.addEventListener('click', toggleMenu);
+        menuOverlay.addEventListener('click', toggleMenu);
+        mobileMenu.querySelectorAll('a').forEach(l => l.addEventListener('click', () => { if(menuOpen) toggleMenu(); }));
+        document.addEventListener('keydown', e => { if(e.key==='Escape' && menuOpen) toggleMenu(); });
+
+        // Scroll Reveal
+        const reveals = document.querySelectorAll('.reveal');
+        if ('IntersectionObserver' in window) {
+            const obs = new IntersectionObserver(entries => {
+                entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+            }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+            reveals.forEach(el => obs.observe(el));
+        } else {
+            reveals.forEach(el => el.classList.add('visible'));
+        }
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', function(e) {
+                const t = this.getAttribute('href');
+                if(t==='#') return;
+                const el = document.querySelector(t);
+                if(el) { e.preventDefault(); el.scrollIntoView({ behavior:'smooth', block:'start' }); }
+            });
+        });
+
+        // Pause orbs when not visible
+        const hero = document.querySelector('section[aria-label="Hero"]');
+        const orbs = document.querySelectorAll('.hero-gradient-orb');
+        if (hero && 'IntersectionObserver' in window) {
+            new IntersectionObserver(entries => {
+                entries.forEach(e => { orbs.forEach(o => { o.style.animationPlayState = e.isIntersecting ? 'running' : 'paused'; }); });
+            }, { threshold: 0 }).observe(hero);
+        }
+
+        updateNavbar();
+    })();
+    </script>
+</body>
+</html>
